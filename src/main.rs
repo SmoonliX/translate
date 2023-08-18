@@ -1,7 +1,10 @@
 use std::collections::HashMap;
 use std::io;
 
-// Простые словари для демонстрации перевода
+fn clear_screen() {
+    print!("{}[2J{}[1;1H", 27 as char, 27 as char);
+}
+
 fn create_translation_dicts() -> (HashMap<&'static str, &'static str>, HashMap<&'static str, &'static str>) {
     let mut dict_ru_to_en = HashMap::new();
     dict_ru_to_en.insert("привет", "hello");
@@ -10,6 +13,12 @@ fn create_translation_dicts() -> (HashMap<&'static str, &'static str>, HashMap<&
     dict_ru_to_en.insert("папа", "dad");
     dict_ru_to_en.insert("работа", "job");
     dict_ru_to_en.insert("практика", "practice");
+    dict_ru_to_en.insert("первый", "first");
+    dict_ru_to_en.insert("телефон", "telephone");
+    dict_ru_to_en.insert("фонарик", "flashlight");
+    dict_ru_to_en.insert("программирование", "programming");
+    dict_ru_to_en.insert("логика", "logics");
+    dict_ru_to_en.insert("письмо", "letter");
 
     let mut dict_en_to_ru = HashMap::new();
     dict_en_to_ru.insert("hello", "привет");
@@ -18,9 +27,14 @@ fn create_translation_dicts() -> (HashMap<&'static str, &'static str>, HashMap<&
     dict_en_to_ru.insert("dad", "папа");
     dict_en_to_ru.insert("job", "работа");
     dict_en_to_ru.insert("practice", "практика");
-    // При желании можно добавить больше слов
+    dict_ru_to_en.insert("first", "первый");
+    dict_ru_to_en.insert("telephone", "телефон");
+    dict_ru_to_en.insert("flashlight", "фонарик");
+    dict_ru_to_en.insert("programming", "программирование");
+    dict_ru_to_en.insert("logics", "логика");
+    dict_ru_to_en.insert("letter", "письмо");
 
-    (dict_ru_to_en, dict_en_to_ru) // Возвращение слов с выбором перевода
+    (dict_ru_to_en, dict_en_to_ru)
 }
 
 fn translate_text(input_text: &str, dict: &HashMap<&str, &str>) -> String {
@@ -39,12 +53,14 @@ fn translate_text(input_text: &str, dict: &HashMap<&str, &str>) -> String {
 fn main() {
     let (dict_ru_to_en, dict_en_to_ru) = create_translation_dicts();
 
-    println!("Введите текст для перевода:");
+    clear_screen(); // Очистка экрана
+
     let mut input_text = String::new();
+    println!("Введите текст для перевода:");
     io::stdin().read_line(&mut input_text).expect("Ошибка чтения строки");
 
-    println!("Выберите направление перевода (1 - с русского на английский, 2 - с английского на русский):");
     let mut choice = String::new();
+    println!("Выберите направление перевода (1 - с русского на английский, 2 - с английского на русский):");
     io::stdin().read_line(&mut choice).expect("Ошибка чтения строки");
 
     let translated_text = match choice.trim() {
@@ -52,8 +68,10 @@ fn main() {
         "2" => translate_text(input_text.trim(), &dict_en_to_ru),
         _ => {
             println!("Некорректный выбор. Текст останется без изменений.");
-            return; 
+            return;
         }
     };
+
+    clear_screen(); // Очистка экрана
     println!("Перевод: {}", translated_text);
 }
